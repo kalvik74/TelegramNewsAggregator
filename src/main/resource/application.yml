@@ -1,0 +1,11 @@
+server:
+  port: 88
+  ssl:
+    enabled: false
+logging:
+  level:
+    com.java993: INFO
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update

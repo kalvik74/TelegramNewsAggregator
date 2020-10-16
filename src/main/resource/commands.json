@@ -1,0 +1,14 @@
+[
+  {
+    "command": "start",
+    "description": "start news notification"
+  },
+  {
+    "command": "stop",
+    "description": "stop news notification"
+  },
+  {
+    "command": "settings",
+    "description": "show me all my settings"
+  }
+]
