@@ -1,5 +1,6 @@
 package com.java993.telegramBotNewsAggregator.behaviour
 
+import com.java993.telegramBotNewsAggregator.service.UserService
 import org.artfable.telegram.api.Behaviour
 import org.artfable.telegram.api.Update
 import org.artfable.telegram.api.request.SendMessageRequest
@@ -13,28 +14,48 @@ class NotificationBehaviour : Behaviour {
     @Autowired
     private lateinit var telegramSender: TelegramSender;
 
+    @Autowired
+    private lateinit var userService: UserService;
+
+
     override fun parse(update: Update?) {
         when {
             update?.message?.text?.startsWith("/start") == true -> {
-                val message = update.extractMessage()!!
-                telegramSender.executeMethod(
-                        SendMessageRequest(
-                                chatId = message.chat.id.toString(),
-                                text = "news notification enabled"
-
-                        )
-                )
+                changeNotificationStatusAndSendMessage(update, true)
             }
             update?.message?.text?.startsWith("/stop") == true -> {
-                val message = update.extractMessage()!!
-                telegramSender.executeMethod(
-                        SendMessageRequest(
-                                chatId = message.chat.id.toString(),
-                                text = "news notification disabled"
-
-                        )
-                )
+                changeNotificationStatusAndSendMessage(update, false)
             }
+        }
+    }
+
+    private fun changeNotificationStatusAndSendMessage(update: Update?, status: Boolean) {
+        val message = update?.extractMessage()!!
+        message.from?.let {
+            val user = userService.updateUserInfoAndGet(
+                    userId = it.id,
+                    userName = it.username.toString(),
+                    chatId = message.chat.id
+            )
+
+            val text = when(status) {
+                true -> {
+                    userService.enableNotification(user.id)
+                    "news notification enabled"
+                }
+                false -> {
+                    userService.disableNotification(user.id)
+                    "news notification disabled"
+                }
+            }
+
+            telegramSender.executeMethod(
+                    SendMessageRequest(
+                            chatId = message.chat.id.toString(),
+                            text = text
+
+                    )
+            )
         }
     }
 }

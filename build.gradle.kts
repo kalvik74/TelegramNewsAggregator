@@ -25,8 +25,12 @@ dependencies {
     implementation("org.artfable:telegram-api:0.5.0")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("redis.clients:jedis")
+    implementation("org.springframework.data:spring-data-redis")
+    implementation("redis.clients:jedis:3.1.0")
     runtimeOnly("com.h2database:h2")
 
+    implementation("it.ozimov:embedded-redis:0.7.2")
     testImplementation("org.springframework.boot:spring-boot-starter-test") {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
         exclude(module = "mockito-core")

@@ -1,0 +1,16 @@
+server:
+  port: 88
+  ssl:
+    enabled: false
+logging:
+  level:
+    com.java993: INFO
+spring:
+  redis:
+    host: localhost
+    port: 6379
+  profiles:
+    active: local
+telegram:
+  bot:
+    commands: classpath:commands.json
