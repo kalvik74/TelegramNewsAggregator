@@ -8,7 +8,8 @@ import org.springframework.stereotype.Component
 @Component
 class TelegramBotNewsAggregator @Autowired constructor(
         notificationBehaviour: Behaviour,
-        settingsBehaviour: Behaviour
+        settingsBehaviour: Behaviour,
+        rssSettingsBehaviour: Behaviour
 )
-    : LongPollingTelegramBot(mutableSetOf(notificationBehaviour, settingsBehaviour), setOf()) {
+    : LongPollingTelegramBot(mutableSetOf(notificationBehaviour, settingsBehaviour, rssSettingsBehaviour), setOf()) {
 }

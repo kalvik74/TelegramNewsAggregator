@@ -10,5 +10,9 @@
   {
     "command": "settings",
     "description": "show me all my settings"
+  },
+  {
+    "command": "addrssurl",
+    "description": "add new rss url for searching news"
   }
 ]

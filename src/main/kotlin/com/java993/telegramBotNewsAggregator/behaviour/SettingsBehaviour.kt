@@ -32,11 +32,11 @@ class SettingsBehaviour : Behaviour {
                 telegramSender.executeMethod(
                             SendMessageRequest(
                                     chatId = message.chat.id.toString(),
-                                    text = "your settings: \nid: *${user.id}* \nname: *${user.name}* \nchatId: *${user.chatId}*" +
-                                            "\nnotification: ${user.settings.enableNotification}" +
-                                            "\nrss: ${user.settings.rss.url.map { "\n-$it" }} \n--------${user.settings.rss.searchFilters.map { "\n-$it" }}" +
-                                            "\nreddit: ${user.settings.reddit.communities.map { "\n-$it" }} \n--------${user.settings.reddit.searchFilters.map { "\n-$it" }}",
-                                    parseMode = ParseMode.MARKDOWN_V2
+                                    text = "your settings: \nID: ${user.id} \nNAME: ${user.name} \nCHATID: ${user.chatId}" +
+                                            "\nNOTIFICATION: ${user.settings.enableNotification}" +
+                                            "\nRSS: \n urls: ${user.settings.rss.url.map { "\n -$it" }} \n filters: ${user.settings.rss.searchFilters.map { "\n -$it" }}" +
+                                            "\nREDDIT: \n communities: ${user.settings.reddit.communities.map { "\n -$it" }} \n" +
+                                            " filters: ${user.settings.reddit.searchFilters.map { "\n -$it" }}"
                             )
                     )
                 }
