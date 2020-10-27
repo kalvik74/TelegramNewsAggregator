@@ -36,6 +36,8 @@ dependencies {
         exclude(module = "mockito-core")
     }
     testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("org.mockito:mockito-junit-jupiter")
+
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
 

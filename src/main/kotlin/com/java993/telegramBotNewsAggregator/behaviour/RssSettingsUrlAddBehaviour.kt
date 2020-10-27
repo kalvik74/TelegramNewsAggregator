@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component
-class RssSettingsBehaviour : Behaviour {
+class RssSettingsUrlAddBehaviour : Behaviour {
 
     @Autowired
     private lateinit var telegramSender: TelegramSender;
@@ -23,7 +23,7 @@ class RssSettingsBehaviour : Behaviour {
     override fun parse(update: Update?) {
         val message = update?.extractMessage()!!
         when {
-            message.text?.startsWith("/addrssurl") == true -> {
+            message.text?.startsWith("/newrssurl") == true -> {
                 message.from?.let {
                     state.add(it.id)
                     telegramSender.executeMethod(
@@ -36,7 +36,7 @@ class RssSettingsBehaviour : Behaviour {
             }
 
             //delete remove state if user choose different command
-            message.text?.startsWith("/")!! -> {
+            message.text?.startsWith("/")!! && state.contains(message.from?.id) -> {
                 state.remove(message.from?.id);
             }
 
