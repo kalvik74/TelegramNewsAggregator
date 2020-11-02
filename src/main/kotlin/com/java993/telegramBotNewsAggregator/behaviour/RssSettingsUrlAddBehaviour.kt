@@ -75,27 +75,4 @@ class RssSettingsUrlAddBehaviour : Behaviour {
         }
     }
 
-    private fun changeNotificationStatusAndSendMessage(update: Update?, status: Boolean) {
-        val message = update?.extractMessage()!!
-        message.from?.let {
-            val user = userService.updateUserInfoAndGet(
-                    userId = it.id,
-                    userName = it.username.toString(),
-                    chatId = message.chat.id
-            )
-
-            val text = when (status) {
-                true -> {
-                    userService.enableNotification(user.id)
-                    "news notification enabled"
-                }
-                false -> {
-                    userService.disableNotification(user.id)
-                    "news notification disabled"
-                }
-            }
-
-
-        }
-    }
 }
