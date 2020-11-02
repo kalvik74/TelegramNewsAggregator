@@ -1,4 +1,4 @@
-package com.java993.telegramBotNewsAggregator.behaviour
+package com.java993.telegramBotNewsAggregator.behaviour.settings.rss
 
 import com.java993.telegramBotNewsAggregator.service.UserService
 import com.java993.telegramBotNewsAggregator.utils.UrlUtils.UrlUtils.isValidURL

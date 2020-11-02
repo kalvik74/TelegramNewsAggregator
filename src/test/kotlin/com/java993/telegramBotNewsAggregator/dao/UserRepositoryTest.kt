@@ -16,9 +16,9 @@ class UserRepositoryTest @Autowired constructor(
     @Test
     fun `When findById then return UserEntity`() {
         val user = UserEntity(
-                id = 1,
+                id = 6,
                 name = "John",
-                chatId = 1,
+                chatId = 6,
                 settings = SettingEntity(
                         enableNotification = true,
                         rss = RssSettingEntity(

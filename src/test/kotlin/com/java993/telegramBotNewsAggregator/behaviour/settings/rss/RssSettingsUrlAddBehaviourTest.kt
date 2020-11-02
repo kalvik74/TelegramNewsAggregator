@@ -1,5 +1,6 @@
-package com.java993.telegramBotNewsAggregator.behaviour
+package com.java993.telegramBotNewsAggregator.behaviour.settings.rss
 
+import com.java993.telegramBotNewsAggregator.behaviour.settings.rss.RssSettingsUrlAddBehaviour
 import com.java993.telegramBotNewsAggregator.createFrom
 import com.java993.telegramBotNewsAggregator.createMessage
 import com.java993.telegramBotNewsAggregator.createModelUser
@@ -28,7 +29,7 @@ internal class RssSettingsUrlAddBehaviourTest {
 
 
     @InjectMocks
-    lateinit var rssSettingsUrlAddBehaviour: RssSettingsUrlAddBehaviour
+    private lateinit var rssSettingsUrlAddBehaviour: RssSettingsUrlAddBehaviour
 
     @BeforeEach
     fun setup() {

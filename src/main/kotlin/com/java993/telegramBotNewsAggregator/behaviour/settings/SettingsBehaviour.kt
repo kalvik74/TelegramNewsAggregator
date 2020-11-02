@@ -1,8 +1,7 @@
-package com.java993.telegramBotNewsAggregator.behaviour
+package com.java993.telegramBotNewsAggregator.behaviour.settings
 
 import com.java993.telegramBotNewsAggregator.service.UserService
 import org.artfable.telegram.api.Behaviour
-import org.artfable.telegram.api.ParseMode
 import org.artfable.telegram.api.Update
 import org.artfable.telegram.api.request.SendMessageRequest
 import org.artfable.telegram.api.service.TelegramSender

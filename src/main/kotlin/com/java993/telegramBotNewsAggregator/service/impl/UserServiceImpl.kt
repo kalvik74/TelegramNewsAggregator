@@ -21,9 +21,9 @@ class UserServiceImpl : UserService {
     @Autowired
     private lateinit var userRepository: UserRepository;
 
-    override fun getUserById(userId: Long): Optional<User> = userRepository.findById(userId).map { User(it) };
+    override fun getUserById(userId: Long): Optional<User> = userRepository.findById(userId).map { toUser(it) };
 
-     override fun updateUserInfoAndGet(userId: Long, userName: String, chatId: Long): User {
+    override fun updateUserInfoAndGet(userId: Long, userName: String, chatId: Long): User {
         var user = getUserById(userId)
         if (user.isEmpty) {
             val userEntity = UserEntity(
@@ -43,53 +43,19 @@ class UserServiceImpl : UserService {
                     )
             )
             userRepository.save(userEntity)
-            return User(userEntity)
+            return toUser(userEntity)
         } else if (user.get().chatId != chatId) {
             user = Optional.of(user.get().copy(chatId = chatId));
-            userRepository.save(UserEntity(user.get()));
+            userRepository.save(toUserEntity(user.get()));
         }
         return user.get();
     }
 
-    fun User(entity: UserEntity): User = User(
-            id = entity.id,
-            chatId = entity.chatId,
-            name = entity.name,
-            settings = Setting(
-                    enableNotification = entity.settings.enableNotification,
-                    rss = RssSetting(
-                            url = mutableListOf(*entity.settings.rss.url.toTypedArray()),
-                            searchFilters = mutableListOf(*entity.settings.rss.searchFilters.toTypedArray())
-                    ),
-                    reddit = RedditSetting(
-                            communities = mutableListOf(*entity.settings.reddit.communities.toTypedArray()),
-                            searchFilters = mutableListOf(*entity.settings.reddit.searchFilter.toTypedArray())
-                    )
-            )
-    )
+    override fun getAllUsers(): List<User> = userRepository.findAll().map { toUser(it) }
 
-    fun UserEntity(user: User): UserEntity = UserEntity(
-            id = user.id,
-            chatId = user.chatId,
-            name = user.name,
-            settings = SettingEntity(
-                    enableNotification = user.settings.enableNotification,
-                    rss = RssSettingEntity(
-                            url = mutableListOf(*user.settings.rss.url.toTypedArray()),
-                            searchFilters = mutableListOf(*user.settings.rss.searchFilters.toTypedArray())
-                    ),
-                    reddit = RedditSettingEntity(
-                            communities = mutableListOf(*user.settings.reddit.communities.toTypedArray()),
-                            searchFilter = mutableListOf(*user.settings.reddit.searchFilters.toTypedArray())
-                    )
-            )
-    )
-
-
-    override fun getAllUsers(): List<User> = userRepository.findAll().map { User(it) }
 
     override fun save(user: User) {
-        userRepository.save(UserEntity(user))
+        userRepository.save(toUserEntity(user))
     }
 
     override fun disableNotification(userId: Long) {
@@ -113,6 +79,40 @@ class UserServiceImpl : UserService {
             )
         }
     }
+
+    private fun toUser(entity: UserEntity): User = User(
+            id = entity.id,
+            chatId = entity.chatId,
+            name = entity.name,
+            settings = Setting(
+                    enableNotification = entity.settings.enableNotification,
+                    rss = RssSetting(
+                            url = mutableListOf(*entity.settings.rss.url.toTypedArray()),
+                            searchFilters = mutableListOf(*entity.settings.rss.searchFilters.toTypedArray())
+                    ),
+                    reddit = RedditSetting(
+                            communities = mutableListOf(*entity.settings.reddit.communities.toTypedArray()),
+                            searchFilters = mutableListOf(*entity.settings.reddit.searchFilter.toTypedArray())
+                    )
+            )
+    )
+
+    private fun toUserEntity(user: User): UserEntity = UserEntity(
+            id = user.id,
+            chatId = user.chatId,
+            name = user.name,
+            settings = SettingEntity(
+                    enableNotification = user.settings.enableNotification,
+                    rss = RssSettingEntity(
+                            url = mutableListOf(*user.settings.rss.url.toTypedArray()),
+                            searchFilters = mutableListOf(*user.settings.rss.searchFilters.toTypedArray())
+                    ),
+                    reddit = RedditSettingEntity(
+                            communities = mutableListOf(*user.settings.reddit.communities.toTypedArray()),
+                            searchFilter = mutableListOf(*user.settings.reddit.searchFilters.toTypedArray())
+                    )
+            )
+    )
 
 
 }
