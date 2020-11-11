@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component
-class RssSettingsUrlAddBehaviour : Behaviour {
+class RssSettingsFilterAddBehaviour : Behaviour {
 
     @Autowired
     private lateinit var telegramSender: TelegramSender;
@@ -23,13 +23,13 @@ class RssSettingsUrlAddBehaviour : Behaviour {
     override fun parse(update: Update?) {
         val message = update?.extractMessage()!!
         when {
-            message.text?.startsWith("/new_rss_url") == true -> {
+            message.text?.startsWith("/new_rss_filter") == true -> {
                 message.from?.let {
                     state.add(it.id)
                     telegramSender.executeMethod(
                             SendMessageRequest(
                                     chatId = message.chat.id.toString(),
-                                    text = "please enter rss url (example: https://habr.com/ru/rss/)"
+                                    text = "please enter searching filter (example: java)"
                             )
                     )
                 }
@@ -41,30 +41,23 @@ class RssSettingsUrlAddBehaviour : Behaviour {
             }
 
             state.contains(message.from?.id) -> {
-                message.text?.let { url ->
+                message.text?.let { filter ->
                     message.from?.let { from ->
-                        val text = when {
-                            isValidURL(url) -> {
-                                state.remove(from.id)
-                                val user = userService.updateUserInfoAndGet(userId = from.id, userName = from.username.toString(), chatId = message.chat.id)
-                                val userCopy = user.copy(
-                                        settings = user.settings.copy(
-                                                rss = user.settings.rss.copy(
-                                                        url = user.settings.rss.url + url
-                                                )
+                        state.remove(from.id)
+                        val user = userService.updateUserInfoAndGet(userId = from.id, userName = from.username.toString(), chatId = message.chat.id)
+                        val userCopy = user.copy(
+                                settings = user.settings.copy(
+                                        rss = user.settings.rss.copy(
+                                                searchFilters = user.settings.rss.searchFilters + filter
                                         )
                                 )
-                                userService.save(userCopy)
-                                "Url $url added successfully"
-                            }
-                            else -> {
-                                "Url $url has mistakes, try again"
-                            }
-                        }
+                        )
+                        userService.save(userCopy)
+
                         telegramSender.executeMethod(
                                 SendMessageRequest(
                                         chatId = message.chat.id.toString(),
-                                        text = text
+                                        text = "Searching filter $filter added successfully"
                                 )
                         )
                     }

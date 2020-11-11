@@ -1,16 +1,19 @@
-package com.java993.telegramBotNewsAggregator.behaviour.settings
+package com.java993.telegramBotNewsAggregator.behaviour.settings.rss
 
 import com.java993.telegramBotNewsAggregator.service.UserService
+import com.java993.telegramBotNewsAggregator.utils.UrlUtils
 import org.artfable.telegram.api.Behaviour
 import org.artfable.telegram.api.ParseMode
 import org.artfable.telegram.api.Update
+import org.artfable.telegram.api.keyboard.InlineKeyboard
 import org.artfable.telegram.api.request.SendMessageRequest
 import org.artfable.telegram.api.service.TelegramSender
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 
 @Component
-class SettingsBehaviour : Behaviour {
+class RssSettingsUrlDeleteBehaviour : Behaviour {
+
 
     @Autowired
     private lateinit var telegramSender: TelegramSender;
@@ -18,11 +21,13 @@ class SettingsBehaviour : Behaviour {
     @Autowired
     private lateinit var userService: UserService;
 
+    @Autowired
+    private lateinit var rssSettingsUrlDeleteButtonBehaviour: RssSettingsUrlDeleteButtonBehaviour;
 
     override fun parse(update: Update?) {
+        val message = update?.extractMessage()!!
         when {
-            update?.message?.text?.startsWith("/settings") == true -> {
-                val message = update?.extractMessage()!!
+            message.text?.startsWith("/del_rss_url") == true -> {
                 message.from?.let {
                     val user = userService.updateUserInfoAndGet(
                             userId = it.id,
@@ -32,21 +37,18 @@ class SettingsBehaviour : Behaviour {
                     telegramSender.executeMethod(
                             SendMessageRequest(
                                     chatId = message.chat.id.toString(),
-                                    text = "*Your Settings* \n " +
-                                            "Name: `${user.name}`\n " +
-                                            "Notification: `${user.settings.enableNotification}` \n \n \n" +
-                                            "*Rss Settings* \n " +
-                                            "Urls: ${user.settings.rss.url.map { "\n `[$it]`" }} \n \\[*/new\\_rss\\_url*\\] or \\[*/del\\_rss\\_url*\\] \n \n \n" +
-                                            "Filters: ${user.settings.rss.searchFilters.map { "\n `[$it]`" }} \n" +
-                                            " \\[*/new\\_rss\\_filter*\\] or \\[*/del\\_rss\\_filter*\\] \n" +
-                                            " \n" +
-                                            " \n",
-                                    parseMode = ParseMode.MARKDOWN_V2
+                                    text = "*Choose Url for deletion*:  \n \n",
+                                    replyMarkup = InlineKeyboard(
+                                            user.settings.rss.url.sorted().mapIndexed { index, url ->
+                                                rssSettingsUrlDeleteButtonBehaviour.createBtn(url, index.toString())
+                                            }.chunked(1).map { it.toTypedArray() }.toTypedArray()
+                                    ),
+
+                                            parseMode = ParseMode.MARKDOWN_V2
+                                    )
                             )
-                    )
                 }
             }
         }
     }
-
 }

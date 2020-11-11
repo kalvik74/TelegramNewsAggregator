@@ -12,7 +12,19 @@
     "description": "show me all my settings"
   },
   {
-    "command": "newrssurl",
+    "command": "new_rss_url",
     "description": "add new rss url for searching news"
+  },
+  {
+    "command": "del_rss_url",
+    "description": "delete rss url for searching news"
+  },
+  {
+    "command": "new_rss_filter",
+    "description": "add new rss searching filter for searching news"
+  },
+  {
+    "command": "del_rss_filter",
+    "description": "delete rss searching filter for searching news"
   }
 ]
