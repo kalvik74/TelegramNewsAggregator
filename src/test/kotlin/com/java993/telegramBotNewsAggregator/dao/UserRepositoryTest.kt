@@ -1,8 +1,8 @@
 package com.java993.telegramBotNewsAggregator.dao
 
-import com.java993.telegramBotNewsAggregator.dao.entity.RedditSettingEntity
-import com.java993.telegramBotNewsAggregator.dao.entity.RssSettingEntity
-import com.java993.telegramBotNewsAggregator.dao.entity.SettingEntity
+import com.java993.telegramBotNewsAggregator.dao.entity.settings.RedditSettingEntity
+import com.java993.telegramBotNewsAggregator.dao.entity.settings.RssSettingEntity
+import com.java993.telegramBotNewsAggregator.dao.entity.settings.SettingEntity
 import com.java993.telegramBotNewsAggregator.dao.entity.UserEntity
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

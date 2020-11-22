@@ -28,6 +28,8 @@ dependencies {
     implementation("redis.clients:jedis")
     implementation("org.springframework.data:spring-data-redis")
     implementation("redis.clients:jedis:3.1.0")
+    implementation("com.apptastic:rssreader:2.2.2")
+    implementation("commons-codec:commons-codec:1.9")
     runtimeOnly("com.h2database:h2")
 
     implementation("it.ozimov:embedded-redis:0.7.2")

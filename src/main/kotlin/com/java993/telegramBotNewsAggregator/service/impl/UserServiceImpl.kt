@@ -5,9 +5,9 @@ import com.java993.telegramBotNewsAggregator.behaviour.model.RssSetting
 import com.java993.telegramBotNewsAggregator.behaviour.model.Setting
 import com.java993.telegramBotNewsAggregator.behaviour.model.User
 import com.java993.telegramBotNewsAggregator.dao.UserRepository
-import com.java993.telegramBotNewsAggregator.dao.entity.RedditSettingEntity
-import com.java993.telegramBotNewsAggregator.dao.entity.RssSettingEntity
-import com.java993.telegramBotNewsAggregator.dao.entity.SettingEntity
+import com.java993.telegramBotNewsAggregator.dao.entity.settings.RedditSettingEntity
+import com.java993.telegramBotNewsAggregator.dao.entity.settings.RssSettingEntity
+import com.java993.telegramBotNewsAggregator.dao.entity.settings.SettingEntity
 import com.java993.telegramBotNewsAggregator.dao.entity.UserEntity
 import com.java993.telegramBotNewsAggregator.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
@@ -52,6 +52,8 @@ class UserServiceImpl : UserService {
     }
 
     override fun getAllUsers(): List<User> = userRepository.findAll().map { toUser(it) }
+
+    override fun getAllUsersWithEnabledNotification(): List<User> = userRepository.findAll().filter { it.settings.enableNotification }.map { toUser(it) }
 
 
     override fun save(user: User) {

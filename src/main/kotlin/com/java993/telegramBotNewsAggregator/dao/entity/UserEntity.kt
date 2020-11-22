@@ -1,5 +1,6 @@
 package com.java993.telegramBotNewsAggregator.dao.entity
 
+import com.java993.telegramBotNewsAggregator.dao.entity.settings.SettingEntity
 import javax.persistence.Id
 import org.springframework.data.redis.core.RedisHash
 

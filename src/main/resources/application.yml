@@ -14,3 +14,9 @@ spring:
 telegram:
   bot:
     commands: classpath:commands.json
+news:
+  checker:
+    job:
+      initialDelay: 1000
+      #fixedDelay: 300000
+      fixedDelay: 5000
